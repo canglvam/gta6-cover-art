@@ -1,75 +1,65 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Neon Coast — GTA-style Cover Maker</title>
 <link rel="icon" href="data:,">
-<link rel="stylesheet" href="./style.css">
+<title>Vice Cover Studio — GTA-style cover art maker</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls" aria-label="Cover controls">
-    <h1>Neon Coast</h1>
-    <p class="tagline">Your photo, a caption, and a Vice City sunset — made into poster cover art, right here on your machine. Nothing is uploaded.</p>
-
-    <div class="group">
+<header class="topbar">
+  <div>
+    <h1>Vice Cover Studio</h1>
+    <p class="tagline">Turn a photo and a caption into GTA-style poster art. Your photos never leave this machine.</p>
+  </div>
+  <div class="top-actions">
+    <button id="undoBtn" disabled>Undo</button>
+    <button id="redoBtn" disabled>Redo</button>
+  </div>
+</header>
+<main class="workspace">
+  <section class="preview-pane">
+    <canvas id="preview" width="900" height="900"></canvas>
+    <p class="hint">Click a panel to select it · drag to move the photo · scroll to zoom</p>
+  </section>
+  <aside class="controls">
+    <section>
       <h2>1 · Photos</h2>
-      <label class="upload">Add your photos
-        <input id="photo" type="file" accept="image/*" multiple>
+      <label class="upload-btn">Add your photos
+        <input id="uploadInput" type="file" accept="image/*" multiple hidden>
       </label>
-      <div class="samples">
-        <span>Try a sample:</span>
-        <button id="sample-boulevard" type="button">Boulevard</button>
-        <button id="sample-pier" type="button">Pier</button>
-      </div>
-      <div id="tray" class="tray" aria-label="Loaded photos"></div>
-      <p class="hint">Click a photo to put it in the selected panel. Click a panel on the cover to select it, drag to move the photo, scroll to zoom.</p>
-    </div>
-
-    <div class="group">
+      <p class="note">Two sample photos are loaded already. Uploaded photos stay in your browser.</p>
+    </section>
+    <section>
       <h2>2 · Layout</h2>
-      <div id="layouts" class="picker" role="group" aria-label="Layout"></div>
-    </div>
-
-    <div class="group">
+      <div id="layoutRow" class="btn-row"></div>
+    </section>
+    <section>
       <h2>3 · Colour grade</h2>
-      <div id="grades" class="picker" role="group" aria-label="Colour grade"></div>
-    </div>
-
-    <div class="group">
-      <h2>4 · Words</h2>
-      <label>Title <input id="title" type="text" maxlength="24" value="Neon Shore"></label>
-      <label>Subtitle <input id="subtitle" type="text" maxlength="32" value="a sunset coast story"></label>
-      <label>Badge <input id="badge" type="text" maxlength="16" value="EST. 2026"></label>
-    </div>
-
-    <div class="group">
-      <h2>Selected panel</h2>
-      <label>Zoom <input id="zoom" type="range" min="1" max="3" step="0.01" value="1.15"></label>
-      <label>Rotate <input id="rotate" type="range" min="-15" max="15" step="0.5" value="0"></label>
-      <div class="row">
-        <button id="undo" type="button">Undo</button>
-        <button id="redo" type="button">Redo</button>
+      <div id="toneRow" class="btn-row"></div>
+    </section>
+    <section>
+      <h2>4 · Caption</h2>
+      <label>Title <input id="titleInput" type="text" maxlength="40" value="Sunset Heist"></label>
+      <label>Subtitle <input id="subtitleInput" type="text" maxlength="40" value="Vice City"></label>
+      <label>Badge <input id="badgeInput" type="text" maxlength="24" value="Vice City"></label>
+    </section>
+    <section>
+      <h2>5 · Panels</h2>
+      <div id="panelControls"></div>
+    </section>
+    <section>
+      <h2>6 · Export</h2>
+      <div id="sizeRow" class="btn-row"></div>
+      <div class="export-row">
+        <button id="exportBtn" class="primary">Export PNG</button>
+        <button id="exportAllBtn">Export all 3 sizes</button>
       </div>
-    </div>
-
-    <div class="group">
-      <h2>5 · Finish</h2>
-      <label class="check"><input id="grain" type="checkbox" checked> Film grain</label>
-      <label class="check"><input id="vignette" type="checkbox" checked> Vignette</label>
-      <label class="check"><input id="halftone" type="checkbox" checked> Halftone title band</label>
-      <div id="sizes" class="picker" role="group" aria-label="Export size"></div>
-      <button id="export" type="button" class="primary">Export PNG</button>
-      <button id="export-all" type="button">Export all three sizes</button>
-      <p id="status" role="status"></p>
-    </div>
-  </section>
-
-  <section class="stage" aria-label="Cover preview">
-    <canvas id="cover" width="1920" height="1080" aria-label="The cover preview"></canvas>
-  </section>
+      <p class="note">PNG in 1080 × 1080, 1080 × 1350 or 1920 × 1080 — ready to post.</p>
+    </section>
+  </aside>
 </main>
-<script type="module" src="./src/main.js"></script>
+<script type="module" src="src/main.js"></script>
 </body>
 </html>
