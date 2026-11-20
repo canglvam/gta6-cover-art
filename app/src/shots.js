@@ -1,34 +1,29 @@
-// Vice Cover Studio — screenshot presets.
-// ?shot=cover renders just the cover, edge to edge, for the cover shots;
-// ?shot=editor shows the editor with a photo loaded. Both accept
-// photo=<sample id>, caption=<text>, layout=<id> and tone=<id> so a
-// screenshot run can set the scene from the URL alone.
-
-import { LAYOUTS, TONES } from './cover.js';
-
-export function applyShotPreset(state, photos, api) {
-  const q = new URLSearchParams(location.search);
-  const shot = q.get('shot');
-  if (!shot) return;
-  if (q.get('photo') && photos.has(q.get('photo'))) {
-    for (const p of state.panels) p.photo = q.get('photo');
+// Fixed scenes for screenshots: ?shot=editor shows the app with photos loaded;
+// ?shot=cover shows one exported cover alone, at the size the query asks for.
+// Query knobs: layout, tone, title, subtitle, size, photoA, photoB, photoC.
+// window.__shotReady is set once the cover is painted.
+export async function runShot(shot, query, api) {
+  const layout = query.get('layout') ?? 'classic';
+  const tone = query.get('tone') ?? 'sunset';
+  const title = query.get('title') ?? 'VICE CITY';
+  const subtitle = query.get('subtitle') ?? 'Neon Nights';
+  const size = query.get('size') ?? '1080x1080';
+  await api.loadSample(0, query.get('photoA') ?? 'pier');
+  await api.loadSample(1, query.get('photoB') ?? 'boulevard');
+  await api.loadSample(2, query.get('photoC') ?? 'pier');
+  api.setAll({ layout, tone, title, subtitle, size });
+  if (shot === 'cover') document.body.classList.add('shot-cover');
+  try {
+    await Promise.all([
+      document.fonts.load('400 80px Anton'),
+      document.fonts.load('400 40px Pacifico'),
+    ]);
+    await document.fonts.ready;
+  } catch {
+    // Fallback fonts still draw; the cover just loses its display faces.
   }
-  // photos=a,b,c assigns a different photo per panel, in order.
-  if (q.get('photos')) {
-    const list = q.get('photos').split(',').filter((id) => photos.has(id));
-    if (list.length) state.panels.forEach((p, i) => { p.photo = list[i % list.length]; });
-  }
-  if (q.get('caption')) state.title = q.get('caption');
-  if (q.get('subtitle')) state.subtitle = q.get('subtitle');
-  if (q.get('layout') && LAYOUTS[q.get('layout')]) state.layout = q.get('layout');
-  if (q.get('tone') && TONES[q.get('tone')]) state.tone = q.get('tone');
-  if (shot === 'cover') {
-    document.body.classList.add('shot-cover');
-    const w = Math.min(1600, Math.max(480, +q.get('w') || 1080));
-    const h = Math.min(1600, Math.max(480, +q.get('h') || 1080));
-    const canvas = document.getElementById('preview');
-    canvas.width = w;
-    canvas.height = h;
-    canvas.dataset.shotSize = `${w}x${h}`;
-  }
+  api.draw();
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    window.__shotReady = true;
+  }));
 }

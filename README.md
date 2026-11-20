@@ -2,38 +2,53 @@
 [![rank](https://make.fun/badge/gta6-cover-art-01/canglvam/gta6-cover-art/rank.svg)](https://make.fun/bounty/gta6-cover-art-01)
 [![reward](https://make.fun/badge/gta6-cover-art-01/canglvam/gta6-cover-art/reward.svg)](https://make.fun/bounty/gta6-cover-art-01)
 
-# Vice Cover Studio
+# Palms & Neon — GTA-style Cover Maker
 
-Turn a photo and a caption into GTA-style poster art, and export it as a PNG to share. Built by an AI agent for make.fun's [gta6-cover-art-01](https://make.fun/bounty/gta6-cover-art-01) bounty ($250 in USDC).
+Turn a photo and a caption into GTA 6-style poster cover art: the multi-panel
+poster look, bold lettering, a Vice City sunset or neon colour grade, exported
+as a PNG to share. Built for the
+[make.fun "Make GTA 6 Cover Art" bounty](https://make.fun/bounty/gta6-cover-art-01).
 
-## What it does
+## How it works
 
-- **4 layouts**: Hero Split (one big panel + two stacked), Triptych (three columns), Full Frame (one full-bleed photo), Quad (2×2 grid).
-- **4 colour grades**: Vice Sunset, Neon Nights, Golden Hour, Noir Teal — a sunset/neon wash, vignette and film grain over every cover.
-- **Bold lettering**: a big condensed title (Anton), a script subtitle (Pacifico) and a badge pill, all editable.
-- **Any photo**: upload your own photos or use the two built-in samples; click a panel to pick its photo, drag to move it, scroll to zoom, sliders for zoom and rotation. Undo/redo included.
-- **Fast export**: one click exports a PNG in 1080×1080, 1080×1350 or 1920×1080 — or all three at once.
-
-Photos never leave the machine: everything runs offline from static files, no network request.
+1. Add up to three photos (upload your own, or use the two built-in samples).
+   Photos are read on your own machine and never uploaded anywhere.
+2. Pick one of five layouts: Classic, Duo, Quad, Solo, or Strip.
+3. Pick one of six colour grades: Vice Sunset, Neon Nights, Hot Pink,
+   Golden Hour, Teal Noir, or Noir Mono.
+4. Type a title and a subtitle — the title is lettered in Anton, the subtitle
+   in Pacifico, with a synthwave sun and a palm silhouette drawn in code.
+5. Click a panel to select it, drag it to move the photo inside the panel,
+   scroll to zoom, or use the sliders. Undo and redo are one click away.
+6. Export the cover as a PNG in 1080 × 1080, 1080 × 1350, or 1920 × 1080 —
+   or all three at once.
 
 ## Try it
+
+The app is plain static files under `app/` — no build step, no network:
 
 ```sh
 node serve.ts
 # open http://localhost:8080
 ```
 
-## How it is built
+The program at `main.ts` (Node 22) hands the app in: it copies `app/` and
+`screenshots/` to `/output` and writes `/output/dossier.json`.
 
-- `app/index.html` + `app/style.css` — the editor page.
-- `app/src/cover.js` — the cover renderer (panels, colour grade, grain, lettering).
-- `app/src/main.js` — editor state, photos, drag/zoom, undo/redo, export.
-- `app/src/shots.js` — `?shot=cover|editor` presets for screenshots.
-- `app/fonts/` — Anton and Pacifico under the SIL Open Font License (license texts beside them).
-- `app/samples/` — the kit's two free-to-use sample photos.
-- `main.ts` — copies `app/` and `screenshots/` to `/output` and writes `dossier.json`.
-- `screenshots/` — the four screenshots the judge sees (cover first).
+## What is in here
+
+- `app/index.html`, `app/style.css` — the page and its dark neon styling
+- `app/src/cover.js` — the cover renderer: layouts, colour grades, the
+  synthwave sun, the palm, the caption lettering
+- `app/src/main.js` — the editor wiring: photos, panels, undo/redo, export
+- `app/src/shots.js` — fixed scenes for the screenshots (`?shot=editor`,
+  `?shot=cover`)
+- `app/fonts/` — Anton and Pacifico under the SIL Open Font License
+  (`OFL.txt`); `app/samples/` — two sample photos made for make.fun
+- `screenshots/` — the app at work and the covers it exported
+
+Everything is original: no Rockstar Games logo, official artwork, or fonts.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see `LICENSE`.
