@@ -3,86 +3,90 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Palms &amp; Neon — GTA-style Cover Maker</title>
-<link rel="icon" href="data:,">
+<title>Vice Nights — GTA-style cover maker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23ff2e88'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<header class="top">
-  <div>
-    <h1>Palms &amp; Neon</h1>
-    <p>Turn your photo into a GTA 6-style poster cover. Offline — your photos never leave this machine.</p>
-  </div>
-  <div class="top-actions">
-    <button id="undo" type="button">Undo</button>
-    <button id="redo" type="button">Redo</button>
-    <button id="random" type="button">Surprise me</button>
-    <button id="reset-all" type="button">Reset</button>
-  </div>
-</header>
 <main class="app">
-  <section class="controls">
-    <div class="card">
-      <h2>1 · Photos</h2>
-      <p class="hint">Three slots. Each panel shows the photo in its slot.</p>
+  <section class="controls" aria-label="Cover controls">
+    <header>
+      <h1>Vice Nights</h1>
+      <p class="tag">Turn any photo into GTA-style cover art. Your photos never leave this machine.</p>
+    </header>
+
+    <div class="group">
+      <h2>Photos</h2>
       <div class="slot">
-        <div class="slot-head"><span class="thumb" id="slot-thumb-0">·</span><b>Photo A</b><span class="slot-name" id="slot-name-0">Empty</span></div>
-        <div class="slot-btns">
-          <label class="file-btn">Upload <input id="photo-0" type="file" accept="image/*"></label>
-          <button id="sample-a-0" type="button">Pier</button>
-          <button id="sample-b-0" type="button">Boulevard</button>
+        <span class="slot-label">Slot 1 · <b id="slot-name-0">empty slot</b></span>
+        <div class="slot-row">
+          <label class="file-btn">Upload <input id="slot-file-0" type="file" accept="image/*"></label>
+          <button id="slot-sample-0" type="button">Sample</button>
         </div>
       </div>
       <div class="slot">
-        <div class="slot-head"><span class="thumb" id="slot-thumb-1">·</span><b>Photo B</b><span class="slot-name" id="slot-name-1">Empty</span></div>
-        <div class="slot-btns">
-          <label class="file-btn">Upload <input id="photo-1" type="file" accept="image/*"></label>
-          <button id="sample-a-1" type="button">Pier</button>
-          <button id="sample-b-1" type="button">Boulevard</button>
+        <span class="slot-label">Slot 2 · <b id="slot-name-1">empty slot</b></span>
+        <div class="slot-row">
+          <label class="file-btn">Upload <input id="slot-file-1" type="file" accept="image/*"></label>
+          <button id="slot-sample-1" type="button">Sample</button>
         </div>
       </div>
       <div class="slot">
-        <div class="slot-head"><span class="thumb" id="slot-thumb-2">·</span><b>Photo C</b><span class="slot-name" id="slot-name-2">Empty</span></div>
-        <div class="slot-btns">
-          <label class="file-btn">Upload <input id="photo-2" type="file" accept="image/*"></label>
-          <button id="sample-a-2" type="button">Pier</button>
-          <button id="sample-b-2" type="button">Boulevard</button>
+        <span class="slot-label">Slot 3 · <b id="slot-name-2">empty slot</b></span>
+        <div class="slot-row">
+          <label class="file-btn">Upload <input id="slot-file-2" type="file" accept="image/*"></label>
+          <button id="slot-sample-2" type="button">Sample</button>
         </div>
       </div>
     </div>
-    <div class="card">
-      <h2>2 · Layout</h2>
-      <div id="layouts" class="picks"></div>
+
+    <div class="group">
+      <h2>Layout</h2>
+      <div id="layouts" class="pick-row"></div>
     </div>
-    <div class="card">
-      <h2>3 · Colour grade</h2>
-      <div id="tones" class="swatches"></div>
+
+    <div class="group">
+      <h2>Colour grade</h2>
+      <div id="tones" class="swatch-row"></div>
     </div>
-    <div class="card">
-      <h2>4 · Caption</h2>
-      <label class="field">Title <input id="title" type="text" maxlength="40" value="VICE CITY"></label>
-      <label class="field">Subtitle <input id="subtitle" type="text" maxlength="40" value="Neon Nights"></label>
+
+    <div class="group">
+      <h2>Caption</h2>
+      <label>Title <input id="title" type="text" maxlength="24" value="Vice Nights"></label>
+      <label>Subtitle <input id="subtitle" type="text" maxlength="32" value="Neon Coast"></label>
     </div>
-    <div class="card">
-      <h2>5 · Selected panel</h2>
-      <p class="hint" id="panel-label">Panel 1</p>
-      <p class="hint">Click a panel, drag it to move the photo, scroll to zoom.</p>
-      <label class="field">Zoom <span id="zoom-val">100%</span><input id="zoom" type="range" min="0.8" max="3" step="0.05" value="1"></label>
-      <label class="field">Pan left–right <span id="pan-x-val">0.00</span><input id="pan-x" type="range" min="-0.6" max="0.6" step="0.01" value="0"></label>
-      <label class="field">Pan up–down <span id="pan-y-val">0.00</span><input id="pan-y" type="range" min="-0.6" max="0.6" step="0.01" value="0"></label>
-      <button id="reset-panel" type="button">Reset panel crop</button>
+
+    <div class="group">
+      <h2>Crop the selected panel</h2>
+      <p id="selected-panel" class="hint">Panel 1 — photo slot 1</p>
+      <label>Zoom <output id="zoom-val">100%</output><input id="zoom" type="range" min="50" max="250" value="100"></label>
+      <label>Pan sideways <output id="panx-val">0</output><input id="panx" type="range" min="-40" max="40" value="0"></label>
+      <label>Pan up / down <output id="pany-val">0</output><input id="pany" type="range" min="-40" max="40" value="0"></label>
+      <label>Rotate <output id="rotate-val">0</output><input id="rotate" type="range" min="-25" max="25" value="0"></label>
+      <p class="hint">Click a panel to select it, drag to move its photo, scroll to zoom.</p>
     </div>
-    <div class="card">
-      <h2>6 · Export</h2>
-      <div id="sizes" class="picks"></div>
-      <button id="export" type="button" class="primary">Export PNG</button>
-      <button id="export-all" type="button">Export all three sizes</button>
+
+    <div class="group row">
+      <button id="undo" type="button">Undo</button>
+      <button id="redo" type="button">Redo</button>
+      <button id="randomize" type="button">Surprise me</button>
+      <button id="reset" type="button">Reset</button>
+    </div>
+
+    <div class="group">
+      <h2>Export PNG</h2>
+      <div class="row">
+        <button id="export-square" type="button" class="primary">1080 × 1080</button>
+        <button id="export-portrait" type="button" class="primary">1080 × 1350</button>
+        <button id="export-wide" type="button" class="primary">1920 × 1080</button>
+      </div>
+      <button id="export-all" type="button" class="primary wide">Export all three sizes</button>
       <p id="status" role="status"></p>
     </div>
   </section>
-  <section class="stage">
-    <canvas id="cover" width="1080" height="1080" aria-label="The cover preview"></canvas>
-    <p class="foot">Original art, lettered in Anton &amp; Pacifico (SIL Open Font License). No Rockstar logo, artwork or fonts. Photos stay on your machine.</p>
+
+  <section class="preview" aria-label="Live preview">
+    <canvas id="cover" width="900" height="900"></canvas>
   </section>
 </main>
 <script type="module" src="./src/main.js"></script>
